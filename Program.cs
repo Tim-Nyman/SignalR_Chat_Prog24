@@ -1,8 +1,11 @@
 using SignalR_Chat_Prog24;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
+builder.Services.AddSession();
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -12,16 +15,16 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseSession();
 app.UseRouting();
 app.UseAuthorization();
-app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
+    pattern: "{controller=UserLogin}/{action=Index}/{id?}"
+);
 
-app.MapHub<ChatHub>("/chat");
-
+app.MapHub<ChatHub>("/chatHub");
 
 app.Run();

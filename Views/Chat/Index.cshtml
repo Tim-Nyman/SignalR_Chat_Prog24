@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Chat";
+}
+<div class="container mt-5">
+    <h2>Welcome, @ViewBag.Username!</h2>
+
+    <div class="mb-3 mt-3">
+        <input type="text" id="messageInput" class="form-control" placeholder="Type a message" />
+        <button class="btn btn-primary mt-2" id="sendBtn">Send</button>
+    </div>
+
+    <ul id="messagesList" class="list-group mt-3"></ul>
+</div>
+
+@section Scripts {
+    <script>
+        connection.on("ReceiveMessage", (user, message) => {
+            const li = document.createElement("li");
+            li.textContent = `${user}: ${message}`;
+            li.className = "list-group-item";
+            li.classList.add(user === "@ViewBag.Username" ? "my-message" : "other-user-message");
+            document.getElementById("messagesList").appendChild(li);
+        });
+
+        connection.start().catch(err => console.error(err.toString()));
+
+        document.getElementById("sendBtn").addEventListener("click", () => {
+            const message = document.getElementById("messageInput").value;
+            if (message) {
+                connection.invoke("SendMessage", "@ViewBag.Username", message)
+                    .catch(err => console.error(err.toString()));
+                document.getElementById("messageInput").value = "";
+            }
+        });
+    </script>
+}
