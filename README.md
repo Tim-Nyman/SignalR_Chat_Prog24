@@ -45,7 +45,7 @@ dotnet restore
 
 ---
 
-3. **Clone the repository:**
+3. **Build the project:**
 
 ```bash
 dotnet build
