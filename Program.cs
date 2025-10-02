@@ -15,6 +15,17 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path == "/")
+    {
+        context.Response.Redirect("/login");
+        return;
+    }
+    await next();
+});
+
 app.UseStaticFiles();
 app.UseSession();
 app.UseRouting();
@@ -25,6 +36,6 @@ app.MapControllerRoute(
     pattern: "{controller=UserLogin}/{action=Index}/{id?}"
 );
 
-app.MapHub<ChatHub>("/chatHub");
 
+app.MapHub<ChatHub>("/chatHub");
 app.Run();
