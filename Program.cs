@@ -37,5 +37,5 @@ app.MapControllerRoute(
 );
 
 
-app.MapHub<ChatHub>("/chatHub");
+app.MapHub<ChatHub>("/chathub");
 app.Run();
